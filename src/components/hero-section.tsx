@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Linkedin, Mail, Github } from "lucide-react";
+import { ArrowRight, Linkedin, Mail, Github, Download} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -55,7 +55,7 @@ export function HeroSection() {
         "Responsible for designing, developing, and maintaining scalable web and App , ensuring high-quality software delivery, and collaborating with cross-functional teams to meet business objectives.",
     },
   ];
-
+const resumeFile = "/resume/Koushik_Panda_Resume.pdf";
 const demoImage =
   "https://media.licdn.com/dms/image/v2/D5603AQELBIEhoD5pJg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1703826175873?e=1742428800&v=beta&t=pjFc0fb0WAWSeq21PobT9YrE_qJ2l5XFmvSCZRs7ix0";
 
@@ -86,7 +86,10 @@ const demoImage =
           transition={{ duration: 0.5 }}
         >
           <div className="space-y-4">
-            <a href="#contact" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer backdrop-blur-sm border border-primary/10">
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer backdrop-blur-sm border border-primary/10"
+            >
               <Github className="h-4 w-4" />
               <span className="text-sm font-medium">Available for Work</span>
               <ArrowRight className="h-4 w-4" />
@@ -100,7 +103,7 @@ const demoImage =
             </p>
 
             {/* Experience Section */}
-            <div className="space-y-3 mt-4 w-full max-w-[600px] mx-auto lg:mx-0">
+            <div className="space-y-3 mt-4 w-full max-w-[600px] mx-auto md:mx-0">
               {experience.map((exp, index) => (
                 <motion.div
                   key={index}
@@ -123,25 +126,55 @@ const demoImage =
             </div>
           </div>
 
-          <div className="flex gap-2 sm:gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="rounded-full group text-sm sm:text-base"
-            >
-              <Link href="#contact">
-                Contact Me
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="rounded-full text-sm sm:text-base"
-              asChild
-            >
-              <Link href="#projects">View Projects</Link>
-            </Button>
+          <div className="flex gap-2 sm:gap-4 flex-col md:flex-row">
+            <div className="flex gap-2 sm:gap-4">
+              <Button
+                asChild
+                size="lg"
+                className="rounded-full group text-sm sm:text-base"
+              >
+                <Link href="#contact">
+                  Contact Me
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-full text-sm sm:text-base"
+                asChild
+              >
+                <Link href="#projects">View Projects</Link>
+              </Button>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-full text-sm sm:text-base flex items-center gap-2"
+                onClick={() => {
+                  fetch(resumeFile)
+                    .then((response) => response.blob())
+                    .then((blob) => {
+                      const url = window.URL.createObjectURL(blob);
+                      const link = document.createElement("a");
+                      link.href = url;
+                      link.download = "Koushik_Panda_Resume.pdf";
+                      document.body.appendChild(link);
+                      link.click();
+                      link.remove();
+                      // Cleanup
+                      window.URL.revokeObjectURL(url);
+                    })
+                    .catch((err) =>
+                      console.error("Error downloading file:", err)
+                    );
+                }}
+              >
+                <Download className="h-4 w-4" />
+                Resume
+              </Button>
+            </div>
           </div>
 
           <div className="flex gap-4">
